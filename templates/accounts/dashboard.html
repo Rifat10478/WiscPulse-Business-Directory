@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+
+    <div class="dashboard-card">
+
+
+        <h2>
+
+            Welcome, {{ user.username }} 👋
+
+        </h2>
+
+
+        <p class="text-muted">
+
+            Manage your account from here.
+
+        </p>
+
+
+
+        <div class="mt-4">
+
+
+            <a href="{% url 'profile' %}" class="btn btn-primary dashboard-btn">
+
+                <i class="fa-solid fa-user"></i>
+
+                View Profile
+
+            </a>
+
+
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger dashboard-btn ms-2">
+
+                Logout
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

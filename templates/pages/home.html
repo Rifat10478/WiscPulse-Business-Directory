@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- ===================================== -->
+<!-- HERO SECTION -->
+<!-- ===================================== -->
+
+{% load static %}
+<section class="hero-section">
+
+    <div class="container">
+
+
+        <div class="row align-items-center">
+
+
+            <div class="col-lg-8 mx-auto text-center">
+
+
+                <span class="hero-badge">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Discover Local Businesses
+
+                </span>
+
+
+                <h1 class="hero-title">
+
+                    Find Local Businesses
+                    <br>
+
+                    <span>
+                        Near You
+                    </span>
+
+                </h1>
+
+
+                <p class="hero-text">
+
+                    Discover trusted restaurants, shops,
+                    services and more in your local area.
+
+                </p>
+
+
+                <!-- Search -->
+
+                <form method="GET" action="{% url 'business_list' %}" class="hero-search">
+
+                    <div class="input-group">
+
+
+                        <span class="input-group-text">
+
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                        </span>
+
+
+                        <input type="text" name="q" class="form-control" placeholder="Search businesses...">
+
+
+                        <button type="submit" class="btn btn-primary">
+
+                            Search
+
+                        </button>
+
+
+                    </div>
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ===================================== -->
+<!-- CATEGORIES -->
+<!-- ===================================== -->
+
+<section class="categories-section mt-0 pt-1">
+
+    <div class="container">
+
+        <div class="section-heading text-center">
+
+            <span class="section-label">
+                Explore
+            </span>
+
+            <h2>
+                Browse Categories
+            </h2>
+
+            <p>
+                Find businesses by category
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            {% for category in categories %}
+
+            <div class="col-6 col-md-4 col-lg-3">
+
+                <a href="{% url 'business_list' %}?category={{ category.slug }}" class="text-decoration-none">
+
+
+                    <div class="category-card">
+
+
+                        <div class="category-icon">
+
+
+                            {% if category.icon %}
+
+                            <i class="{{ category.icon }}"></i>
+
+                            {% else %}
+
+                            <i class="fa-solid fa-store"></i>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                        <h5>
+
+                            {{ category.name }}
+
+                        </h5>
+
+
+                        <p>
+
+                            {{ category.description|truncatewords:10 }}
+
+                        </p>
+
+
+                    </div>
+
+
+                </a>
+
+            </div>
+
+
+            {% empty %}
+
+            <div class="col-12 text-center">
+
+                <p>
+                    No categories available.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===================================== -->
+<!-- FEATURED BUSINESSES -->
+<!-- ===================================== -->
+
+<section class="featured-section">
+
+
+    <div class="container">
+
+
+        <div class="section-heading">
+
+
+            <span class="section-label">
+                Featured
+            </span>
+
+
+            <h2>
+                Featured Businesses
+            </h2>
+
+
+            <p>
+                Discover some of the best local businesses.
+            </p>
+
+
+        </div>
+
+
+
+        <div class="row g-4">
+
+
+            {% for business in featured_businesses %}
+
+
+            <div class="col-md-6 col-lg-4">
+
+
+                <div class="business-card">
+
+
+                    <!-- Image -->
+
+                    <div class="business-image">
+
+
+                        {% if business.cover_image %}
+
+
+                        <img src="{{ business.cover_image.url }}" alt="{{ business.name }}">
+
+
+                        {% else %}
+
+
+                        <div class="no-business-image">
+
+                            <i class="fa-solid fa-store"></i>
+
+                        </div>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+
+                    <!-- Content -->
+
+                    <div class="business-content">
+
+
+                        <span class="business-category">
+
+                            {{ business.category.name }}
+
+                        </span>
+
+
+                        <h4>
+
+                            {{ business.name }}
+
+                        </h4>
+
+
+                        <div class="business-rating">
+
+                            <i class="fa-solid fa-star"></i>
+
+                            {{ business.rating }}
+
+                            <span>
+                                ({{ business.review_count }} reviews)
+                            </span>
+
+                        </div>
+
+
+                        <p>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            {{ business.city }}
+
+                        </p>
+
+
+                        <a href="{{ business.get_absolute_url }}" class="btn btn-outline-primary">
+
+                            View Business
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            {% empty %}
+
+
+            <div class="col-12 text-center">
+
+                <p>
+                    No featured businesses available.
+                </p>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        <div class="text-center mt-5">
+
+
+            <a href="/businesses/" class="btn btn-primary px-4">
+
+                View All Businesses
+
+                <i class="fa-solid fa-arrow-right ms-2"></i>
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}

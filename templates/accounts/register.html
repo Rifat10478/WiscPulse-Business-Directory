@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="login-wrapper">
+
+
+    <div class="login-card">
+
+
+        <div class="login-header">
+
+
+            <div class="login-icon">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+            </div>
+
+
+            <h2>
+                Create Account
+            </h2>
+
+
+            <p>
+                Join WiscPulse and discover local businesses
+            </p>
+
+
+        </div>
+
+
+
+
+        <form method="POST">
+
+
+            {% csrf_token %}
+
+
+            <div class="form-group">
+
+                <label>
+                    Username
+                </label>
+
+                {{ form.username }}
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="{{ form.email.id_for_label }}">
+                    Email
+                </label>
+
+                <input type="email" name="email" id="{{ form.email.id_for_label }}" class="form-control"
+                    placeholder="Enter email address" autocomplete="email" value="{{ form.email.value|default:'' }}">
+
+                {% for error in form.email.errors %}
+
+                <small class="text-danger">
+                    {{ error }}
+                </small>
+
+                {% endfor %}
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label>
+                    Password
+                </label>
+
+                {{ form.password1 }}
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label>
+                    Confirm Password
+                </label>
+
+                {{ form.password2 }}
+
+            </div>
+
+
+
+
+            <button type="submit" class="login-btn">
+
+                Create Account
+
+            </button>
+
+
+
+        </form>
+
+
+
+        <div class="login-footer">
+
+
+            <p>
+
+                Already have an account?
+
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

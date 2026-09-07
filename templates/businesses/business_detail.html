@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+
+    <!-- Cover Image -->
+
+    {% if business.cover_image %}
+
+    <img src="{{ business.cover_image.url }}" class="img-fluid rounded w-100" style="height:350px; object-fit:cover;"
+        alt="{{ business.name }}">
+
+    {% endif %}
+
+
+
+    <div class="row mt-4">
+
+
+        <!-- Main Content -->
+
+        <div class="col-md-8">
+
+
+            <h1>
+                {{ business.name }}
+            </h1>
+
+
+
+            <p class="text-muted">
+
+                {{ business.category.name }}
+
+            </p>
+
+
+
+
+            <h4>
+
+                ⭐ {{ average_rating|floatformat:1|default:"0" }}
+
+                <small>
+
+                    ({{ reviews.count }} reviews)
+
+                </small>
+
+            </h4>
+
+
+
+
+            <hr>
+
+
+
+
+            <h3>
+                About Business
+            </h3>
+
+
+
+            <p>
+
+                {{ business.description }}
+
+            </p>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- Contact Card -->
+
+
+        <div class="col-md-4">
+
+
+            <div class="card p-4 shadow">
+
+
+                <h4>
+                    Contact Information
+                </h4>
+
+
+                <hr>
+
+
+
+
+                <p>
+
+                    📞
+
+                    {{ business.phone }}
+
+                </p>
+
+
+
+
+                <p>
+
+                    ✉
+
+                    {{ business.email }}
+
+                </p>
+
+
+
+
+                {% if business.website %}
+
+                <p>
+
+                    🌐
+
+                    <a href="{{ business.website }}" target="_blank">
+
+                        Website
+
+                    </a>
+
+                </p>
+
+                {% endif %}
+
+
+
+
+                <p>
+
+                    📍
+
+                    {{ business.address }}
+
+                    <br>
+
+                    {{ business.city }}
+
+                    {% if business.state %}
+
+                    , {{ business.state }}
+
+                    {% endif %}
+
+                </p>
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- REVIEWS -->
+
+
+    <div class="mt-5">
+
+
+        <h3>
+
+            Customer Reviews
+
+        </h3>
+
+
+
+        <hr>
+
+
+
+        {% if reviews %}
+
+
+
+        {% for review in reviews %}
+
+
+
+
+
+        <div class="review-card">
+
+
+            <div class="review-header">
+
+
+                <div>
+
+
+                    <h5>
+
+                        {{ review.user.username }}
+
+                    </h5>
+
+
+                    <small class="text-muted">
+
+                        {{ review.created_at|date:"M d, Y" }}
+
+                    </small>
+
+
+                </div>
+
+
+
+                <div class="review-stars">
+
+                    {% for i in "12345" %}
+
+                    {% if forloop.counter <= review.rating %} <i class="fa-solid fa-star"></i>
+
+                        {% else %}
+
+                        <i class="fa-regular fa-star"></i>
+
+                        {% endif %}
+
+                        {% endfor %}
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <p class="review-comment">
+
+                {{ review.comment }}
+
+            </p>
+
+
+
+        </div>
+
+
+
+        {% endfor %}
+
+
+
+
+        {% else %}
+
+
+
+        <p>
+
+            No reviews yet.
+
+        </p>
+
+
+
+        {% endif %}
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <!-- ADD REVIEW -->
+
+
+    <div class="mt-5">
+
+
+        <h3>
+
+            Add Your Review
+
+        </h3>
+
+
+        <hr>
+
+
+
+
+        {% if user.is_authenticated %}
+
+
+
+        <form method="POST">
+
+
+            {% csrf_token %}
+
+
+
+
+            <div class="mb-3">
+
+
+                <label for="id_rating" class="form-label">
+
+                    Rating
+
+                </label>
+
+
+
+                <div class="mb-3">
+
+
+                    <label class="form-label">
+
+                        Your Rating
+
+                    </label>
+
+
+
+                    <div class="star-rating">
+
+
+                        <input type="radio" name="rating" value="5" id="star5" required>
+
+                        <label for="star5">
+
+                            ★
+
+                        </label>
+
+
+
+
+                        <input type="radio" name="rating" value="4" id="star4">
+
+
+                        <label for="star4">
+
+                            ★
+
+                        </label>
+
+
+
+
+                        <input type="radio" name="rating" value="3" id="star3">
+
+
+                        <label for="star3">
+
+                            ★
+
+                        </label>
+
+
+
+
+                        <input type="radio" name="rating" value="2" id="star2">
+
+
+                        <label for="star2">
+
+                            ★
+
+                        </label>
+
+
+
+
+                        <input type="radio" name="rating" value="1" id="star1">
+
+
+                        <label for="star1">
+
+                            ★
+
+                        </label>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+            <div class="mb-3">
+
+
+                <label for="id_comment" class="form-label">
+
+                    Your Review
+
+                </label>
+
+
+
+
+                <textarea name="comment" id="id_comment" class="form-control" rows="5"
+                    placeholder="Write your review here..." required></textarea>
+
+
+
+            </div>
+
+
+
+
+
+
+            <button type="submit" class="btn btn-primary">
+
+                Submit Review
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+
+
+        {% else %}
+
+
+
+        <p>
+
+            Please
+
+            <a href="{% url 'login' %}">
+                login
+            </a>
+
+            to add a review.
+
+        </p>
+
+
+
+
+        {% endif %}
+
+
+
+    </div>
+
+
+
+
+</div>
+
+
+
+{% endblock %}

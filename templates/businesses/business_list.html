@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/business.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+
+
+<section class="directory-header">
+
+
+    <div class="container">
+
+
+        <div class="text-center">
+
+
+            <h1>
+                Find Local Businesses
+            </h1>
+
+
+            <p>
+                Discover trusted businesses near you.
+            </p>
+
+
+        </div>
+
+
+        <!-- Search & Filter -->
+
+
+        <form method="GET" class="search-filter-box">
+
+
+            <div class="row g-3">
+
+
+                <!-- Search -->
+
+                <div class="col-lg-5">
+
+
+                    <input type="text" name="q" class="form-control" placeholder="Search businesses..."
+                        value="{{ request.GET.q }}">
+
+
+                </div>
+
+
+
+                <!-- Category -->
+
+                <div class="col-lg-3">
+
+
+                    <select name="category" class="form-select">
+
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+
+                        {% for category in categories %}
+
+
+                        <option value="{{ category.slug }}" {% if request.GET.category == category.slug %} selected {% endif %}>
+
+                            {{ category.name }}
+
+                        </option>
+
+
+                        {% endfor %}
+
+
+                    </select>
+
+
+                </div>
+
+
+
+
+                <!-- City -->
+
+
+                <div class="col-lg-3">
+
+
+                    <select name="city" class="form-select">
+
+
+                        <option value="">
+                            All Cities
+                        </option>
+
+
+
+                        {% for city in cities %}
+
+
+                        <option value="{{ city }}" {% if request.GET.city == city %} selected {% endif %}>
+
+                            {{ city }}
+
+                        </option>
+
+
+                        {% endfor %}
+
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- Button -->
+
+
+                <div class="col-lg-1">
+
+
+                    <button class="btn btn-primary w-100" type="submit">
+
+                        <i class="fa-solid fa-search"></i>
+
+                    </button>
+
+
+                </div>
+
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</section>
+
+
+
+
+<!-- BUSINESS LIST -->
+
+
+<section class="business-list-section">
+
+
+    <div class="container">
+
+
+        <div class="row g-4">
+
+
+
+            {% for business in businesses %}
+
+
+
+            <div class="col-md-6 col-lg-4">
+
+
+
+                <div class="business-card">
+
+
+
+                    <!-- Image -->
+
+
+                    <div class="business-image">
+
+
+                        {% if business.cover_image %}
+
+
+                        <img src="{{ business.cover_image.url }}" alt="{{ business.name }}">
+
+
+                        {% else %}
+
+
+                        <div class="no-business-image">
+
+                            <i class="fa-solid fa-store"></i>
+
+                        </div>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+
+
+                    <!-- Content -->
+
+
+                    <div class="business-content">
+
+
+
+                        <span class="business-category">
+
+                            {{ business.category.name }}
+
+                        </span>
+
+
+
+                        <h4>
+
+                            {{ business.name }}
+
+                        </h4>
+
+
+
+                        <div class="business-rating">
+
+
+                            <i class="fa-solid fa-star"></i>
+
+
+                            {{ business.rating }}
+
+
+                            <span>
+
+                                ({{ business.review_count }} reviews)
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <p>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            {{ business.city }}
+
+                        </p>
+
+
+
+                        <a href="{{ business.get_absolute_url }}" class="btn btn-outline-primary">
+
+                            View Details
+
+                        </a>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+            {% empty %}
+
+
+
+            <div class="col-12 text-center">
+
+
+                <div class="alert alert-warning">
+
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+
+                    No businesses found.
+
+
+                </div>
+
+
+            </div>
+
+
+
+            {% endfor %}
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+</section>
+
+
+
+
+<!-- PAGINATION -->
+
+
+{% if page_obj.has_other_pages %}
+
+
+<nav class="mt-5">
+
+
+<ul class="pagination justify-content-center">
+
+
+    {% if page_obj.has_previous %}
+
+    <li class="page-item">
+
+        <a 
+        class="page-link"
+        href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&category={{ request.GET.category }}&city={{ request.GET.city }}"
+        >
+
+            Previous
+
+        </a>
+
+    </li>
+
+    {% endif %}
+
+
+
+    {% for num in page_obj.paginator.page_range %}
+
+
+    <li class="page-item 
+        {% if page_obj.number == num %}active{% endif %}
+    ">
+
+
+        <a 
+        class="page-link"
+        href="?page={{ num }}&q={{ request.GET.q }}&category={{ request.GET.category }}&city={{ request.GET.city }}"
+        >
+
+            {{ num }}
+
+        </a>
+
+
+    </li>
+
+
+    {% endfor %}
+
+
+
+
+    {% if page_obj.has_next %}
+
+
+    <li class="page-item">
+
+
+        <a 
+        class="page-link"
+        href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&category={{ request.GET.category }}&city={{ request.GET.city }}"
+        >
+
+            Next
+
+        </a>
+
+
+    </li>
+
+
+    {% endif %}
+
+
+
+</ul>
+
+
+</nav>
+
+
+{% endif %}
+
+
+
+{% endblock %}

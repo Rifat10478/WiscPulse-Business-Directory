@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="login-wrapper">
+
+
+    <div class="login-card">
+
+
+        <div class="login-header">
+
+
+            <div class="login-icon">
+
+                <i class="fa-solid fa-user-lock"></i>
+
+            </div>
+
+
+            <h2>
+                Welcome Back
+            </h2>
+
+
+            <p>
+                Login to your WiscPulse account
+            </p>
+
+
+        </div>
+
+
+
+        <form method="POST"> 
+            {% csrf_token %} 
+            <!-- USERNAME -->
+            <div class="form-group"> 
+                <label for="username"> Username </label> 
+                <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" autocomplete="username" required>
+            </div> 
+            <!-- PASSWORD -->
+            <div class="form-group"> 
+                <label for="password"> Password </label> <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" autocomplete="current-password" required> 
+            </div>
+            <button type="submit" class="login-btn">
+
+                Login
+
+            </button>
+
+
+        </form>
+
+
+
+        <div class="login-footer">
+
+
+            <p>
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}">
+                    Create Account
+                </a>
+
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
