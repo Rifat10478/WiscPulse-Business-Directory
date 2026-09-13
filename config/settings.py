@@ -131,6 +131,19 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+import os
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "wiscpulse-business-directory-3.onrender.com",
+]
+
+render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
