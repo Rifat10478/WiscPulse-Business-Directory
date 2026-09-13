@@ -148,3 +148,14 @@ MAILERS = {
 LOGIN_REDIRECT_URL = "/accounts/dashboard/"
 LOGOUT_REDIRECT_URL = "/"
 
+import os
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+]
+
+render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
